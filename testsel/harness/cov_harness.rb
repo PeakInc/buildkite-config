@@ -77,6 +77,11 @@ end
 unless Coverage.running?
   Coverage.start(lines: true)
 end
+# A process that starts with the baseline tag after a test file began got it from a restored environment
+# (Bundler.with_original_env and friends). Test files run one at a time per shard, so it belongs to the current one.
+if ENV["COV_TAG"].to_s.end_with?("__baseline__") && File.exist?(CovHarness::CUR)
+  ENV["COV_TAG"] = File.read(CovHarness::CUR)
+end
 at_exit { CovHarness.dump }
 
 module CovHarnessExit
