@@ -12,6 +12,7 @@ require "coverage"
 module CovHarness
   ROOT = "/rails/"
   OUT = ENV["COV_OUT"] || "/cov/out"
+  CUR = File.join(File.dirname(OUT), "current_tag")
   @dumped = false
   @t0 = nil
   @owner = nil
@@ -29,6 +30,7 @@ module CovHarness
 
     def take_tag(tag)
       ENV["COV_TAG"] = tag
+      begin; File.write(CUR, tag); rescue StandardError; nil; end
       Coverage.result(stop: false, clear: true) if Coverage.running?
       @t0 = Process.clock_gettime(Process::CLOCK_MONOTONIC)
       @owner = Process.pid

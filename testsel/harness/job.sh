@@ -5,6 +5,7 @@ MODE=$1
 IDX=${SHARD:-${BUILDKITE_PARALLEL_JOB:-0}}; N=${SHARDS:-${BUILDKITE_PARALLEL_JOB_COUNT:-1}}
 export IMAGE_NAME=nscr.io/5j9uiopmtrqnk/rails-bench-builds:ruby-4-0-01a15052-776f-44d8-84b8-440bc0410bbe
 mkdir -p cov/out ../test-reports
+rm -f cov/current_tag
 cp testsel/harness/cov_harness.rb testsel/harness/ar_runner.rb testsel/harness/merge.rb testsel/harness/interesting.txt cov/
 chmod -R a+rwX cov ../test-reports
 C="docker compose -f docker-compose.yml"
